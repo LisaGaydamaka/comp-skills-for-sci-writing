@@ -9,6 +9,8 @@ toc: false
 slide_level: 2
 aspectratio: 43
 section-titles: true
+mainfont: "PT Serif"
+sansfont: "PT Sans"
 ---
 
 # Цель работы
