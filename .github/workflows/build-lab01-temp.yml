@@ -35,7 +35,7 @@ jobs:
         working-directory: lab01/presentation
         run: |
           pandoc -t beamer presentation.md -V theme:metropolis -o presentation.pdf --pdf-engine=xelatex
-          pandoc -s -t revealjs --slide-level=2 --embed-resources -V revealjs-url=https://unpkg.com/reveal.js@4.6.1 presentation.md -o presentation.html
+          pandoc -s -t revealjs --slide-level=2 -V revealjs-url=https://unpkg.com/reveal.js@4.6.1 presentation.md -o presentation.html
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
