@@ -81,7 +81,7 @@ header-includes:
 
 1. Попробовать пример с `natbib` и BibTeX.
 
-![Рис.1](image\picture1.png)  
+![Рис.1](image/1.png)  
 
 2. Для него выполнить последовательность:
 
