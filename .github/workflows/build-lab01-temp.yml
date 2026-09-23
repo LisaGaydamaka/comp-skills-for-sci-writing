@@ -1,0 +1,57 @@
+name: Build lab01 artifacts
+
+on:
+  push:
+    paths:
+      - ".github/workflows/build-lab01-temp.yml"
+      - "lab01/report/report.md"
+      - "lab01/report/image/**"
+      - "lab01/presentation/presentation.md"
+      - "lab01/presentation/image/**"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended texlive-lang-cyrillic fonts-paratype
+
+      - name: Build report
+        working-directory: lab01/report
+        run: |
+          pandoc report.md -o report.pdf --pdf-engine=xelatex
+          pandoc report.md -o report.docx
+
+      - name: Build presentation
+        working-directory: lab01/presentation
+        run: |
+          pandoc -t beamer presentation.md -V theme:metropolis -o presentation.pdf --pdf-engine=xelatex
+          pandoc -s -t revealjs --slide-level=2 --embed-resources -V revealjs-url=https://unpkg.com/reveal.js@4.6.1 presentation.md -o presentation.html
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab01-build
+          path: |
+            lab01/report/report.pdf
+            lab01/report/report.docx
+            lab01/presentation/presentation.pdf
+            lab01/presentation/presentation.html
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lab01/report/report.pdf lab01/report/report.docx
+          git add lab01/presentation/presentation.pdf lab01/presentation/presentation.html
+          git commit -m "build: compile lab 1 report and presentation" || exit 0
+          git push
