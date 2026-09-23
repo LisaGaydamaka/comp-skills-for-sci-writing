@@ -81,7 +81,7 @@ header-includes:
 
 1. Создать файл `first.tex`.
 
-![Рис.1](image\picture1.png)  
+![Рис.1](image/1.png)  
 
 2. Вставить в него простой LaTeX-документ с:
    - `\documentclass{article}`;
