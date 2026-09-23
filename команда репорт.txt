@@ -1,0 +1,2 @@
+pandoc report.md -o report.pdf --pdf-engine=xelatex
+pandoc report.md -o report.docx

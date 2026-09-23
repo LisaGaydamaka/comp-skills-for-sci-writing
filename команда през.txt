@@ -1,0 +1,19 @@
+pandoc -t beamer presentation.md -V theme:metropolis -o presentation.pdf --pdf-engine=xelatex
+
+
+
+
+
+
+
+
+
+
+
+cd C:\Users\Elisaveta\Downloads\инф безопасность\инф безопасность\lab8\report
+pandoc report.md -o report.docx
+pandoc report.md -o report.pdf --pdf-engine=xelatex
+cd ..
+cd presentation
+pandoc -t beamer presentation.md -V theme:metropolis -o presentation.pdf --pdf-engine=xelatex
+
