@@ -130,11 +130,11 @@ make prepare
 22. Создать теги и релиз.
 23. Установить TeX Live.
 
-![Рис.1](image\1.png)
+![Рис.1](image/1.png)
 
-![Рис.2](image\2.png)
+![Рис.2](image/2.png)
 
-![Рис.2](image\3.png)
+![Рис.2](image/3.png)
 
 # Выводы
 
