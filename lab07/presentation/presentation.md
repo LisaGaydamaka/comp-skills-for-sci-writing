@@ -37,7 +37,7 @@ section-titles: true
 
 1. Создать презентацию класса `\documentclass{beamer}`.
 
-![Рис.1](image\picture1.png)  
+![Рис.1](image/1.png)  
 
 2. Выбрать тему, например `\usetheme{Copenhagen}`.
 3. Указать автора и название презентации.
