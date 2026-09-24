@@ -45,7 +45,7 @@ section-titles: true
 
 ## Результат: пункт 1
 
-![Рис.1](image/1.png){width=80%}
+![Рис.1](image/1.PNG){width=80%}
 
 ## Выполнение: пункт 2
 
@@ -53,7 +53,7 @@ section-titles: true
 
 ## Результат: пункт 2
 
-![Рис.2](image/2.png){width=80%}
+![Рис.2](image/2.PNG){width=80%}
 
 ## Выполнение: пункт 3
 
@@ -61,7 +61,7 @@ section-titles: true
 
 ## Результат: пункт 3
 
-![Рис.3](image/3.png){width=80%}
+![Рис.3](image/3.PNG){width=80%}
 
 ## Выполнение: пункт 4
 
@@ -69,7 +69,7 @@ section-titles: true
 
 ## Результат: пункт 4
 
-![Рис.4](image/4.png){width=80%}
+![Рис.4](image/4.PNG){width=80%}
 
 ## Выполнение: пункт 5
 
@@ -77,7 +77,7 @@ section-titles: true
 
 ## Результат: пункт 5
 
-![Рис.5](image/5.png){width=80%}
+![Рис.5](image/5.PNG){width=80%}
 
 ## Выполнение: пункт 6
 
@@ -85,7 +85,7 @@ section-titles: true
 
 ## Результат: пункт 6
 
-![Рис.6](image/6.png){width=80%}
+![Рис.6](image/6.PNG){width=80%}
 
 ## Выполнение: пункт 7
 
@@ -93,7 +93,7 @@ section-titles: true
 
 ## Результат: пункт 7
 
-![Рис.7](image/7.png){width=80%}
+![Рис.7](image/7.PNG){width=80%}
 
 # Выводы
 
