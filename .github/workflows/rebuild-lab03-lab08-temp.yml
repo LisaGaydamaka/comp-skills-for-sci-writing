@@ -1,0 +1,123 @@
+name: Rebuild labs 03-08 reports and presentations
+
+on:
+  push:
+    paths:
+      - ".github/workflows/rebuild-lab03-lab08-temp.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc \
+            texlive-xetex \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-lang-cyrillic \
+            texlive-bibtex-extra \
+            biber \
+            fonts-paratype \
+            libreoffice \
+            poppler-utils
+
+      - name: Prepare images and sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 03 04 05 06 07 08; do
+            # User screenshots are stored as *.PNG; make Markdown references match exactly.
+            sed -i -E 's#image/([0-9]+)\.png#image/\1.PNG#g' "lab${n}/report/report.md"
+            sed -i -E 's#image/([0-9]+)\.png#image/\1.PNG#g' "lab${n}/presentation/presentation.md"
+
+            # Presentation uses the same screenshots as the report.
+            rm -rf "lab${n}/presentation/image"
+            cp -a "lab${n}/report/image" "lab${n}/presentation/image"
+          done
+
+      - name: Build reports
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 03 04 05 06 07 08; do
+            echo "=== Building lab${n} report ==="
+            (
+              cd "lab${n}/report"
+              pandoc report.md -o report.pdf --pdf-engine=xelatex
+              pandoc report.md -o report.docx
+            )
+          done
+
+      - name: Build presentations
+        shell: bash
+        run: |
+          set -euo pipefail
+          for n in 03 04 05 06 07 08; do
+            echo "=== Building lab${n} presentation ==="
+            (
+              cd "lab${n}/presentation"
+              pandoc -t beamer presentation.md \
+                -V theme:metropolis \
+                -V mainfont="PT Serif" \
+                -V sansfont="PT Sans" \
+                -V monofont="PT Mono" \
+                -o presentation.pdf \
+                --pdf-engine=xelatex
+              pandoc -s -t revealjs \
+                --slide-level=2 \
+                --embed-resources \
+                -V revealjs-url=https://unpkg.com/reveal.js@4.6.1 \
+                presentation.md -o presentation.html
+            )
+          done
+
+      - name: Render PDFs and DOCX for QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa
+          for n in 03 04 05 06 07 08; do
+            mkdir -p "qa/lab${n}/report-pdf" "qa/lab${n}/presentation-pdf" "qa/lab${n}/report-docx"
+            pdftoppm -png -r 120 "lab${n}/report/report.pdf" "qa/lab${n}/report-pdf/page" >/dev/null 2>&1
+            pdftoppm -png -r 120 "lab${n}/presentation/presentation.pdf" "qa/lab${n}/presentation-pdf/slide" >/dev/null 2>&1
+
+            mkdir -p "qa/lab${n}/docx-convert"
+            libreoffice --headless --convert-to pdf --outdir "qa/lab${n}/docx-convert" "lab${n}/report/report.docx" >/dev/null 2>&1
+            pdftoppm -png -r 120 "qa/lab${n}/docx-convert/report.pdf" "qa/lab${n}/report-docx/page" >/dev/null 2>&1
+          done
+
+      - name: Upload QA renders
+        uses: actions/upload-artifact@v4
+        with:
+          name: labs03-08-qa-renders
+          path: qa
+          retention-days: 2
+
+      - name: Commit generated files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          for n in 03 04 05 06 07 08; do
+            git add "lab${n}/report/report.md" \
+                    "lab${n}/report/report.pdf" \
+                    "lab${n}/report/report.docx" \
+                    "lab${n}/presentation/presentation.md" \
+                    "lab${n}/presentation/presentation.pdf" \
+                    "lab${n}/presentation/presentation.html" \
+                    "lab${n}/presentation/image"
+          done
+
+          git commit -m "build: rebuild labs 3-8 reports and presentations" || exit 0
+          git push
