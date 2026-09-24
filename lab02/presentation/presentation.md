@@ -15,6 +15,9 @@ slide_level: 2
 #  - '\makeatother'
 aspectratio: 43
 section-titles: true
+mainfont: PT Serif
+sansfont: PT Sans
+monofont: PT Mono
 ---
 
 # Цель работы
