@@ -1,0 +1,43 @@
+name: Create lab releases
+
+on:
+  push:
+    paths:
+      - ".github/workflows/create-lab-releases-temp.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create ZIP archives
+        run: |
+          set -euo pipefail
+          for n in 01 02 03 04 05 06 07 08; do
+            zip -qr "lab${n}.zip" "lab${n}"
+          done
+
+      - name: Create releases
+        run: |
+          set -euo pipefail
+          i=1
+          for n in 01 02 03 04 05 06 07 08; do
+            tag="lab${i}"
+            title="lab ${i}"
+            asset="lab${n}.zip"
+
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release upload "$tag" "$asset" --clobber
+              gh release edit "$tag" --title "$title"
+            else
+              gh release create "$tag" "$asset" --target main --title "$title" --notes ""
+            fi
+            i=$((i + 1))
+          done
