@@ -1,0 +1,53 @@
+\documentclass[border=1cm]{standalone}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+
+\usepackage{tikz}
+\usetikzlibrary{math}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+% #1 = x, #2 = y, #3 = размер квадрата, #4 = глубина рекурсии
+\newcommand{\SierpinskiCarpet}[4]{%
+    \pgfmathtruncatemacro{\Level}{#4}
+    \ifnum\Level=0
+        \fill (#1,#2) rectangle ++(#3,#3);
+    \else
+        \pgfmathsetmacro{\Step}{#3/3}
+        \pgfmathtruncatemacro{\NextLevel}{\Level-1}
+        \foreach \i in {0,1,2}{
+            \foreach \j in {0,1,2}{
+                % пропускаем центральный квадрат (1,1)
+                \ifnum\i=1
+                    \ifnum\j=1
+                    \else
+                        \pgfmathsetmacro{\Xnew}{#1 + \i*\Step}
+                        \pgfmathsetmacro{\Ynew}{#2 + \j*\Step}
+                        \SierpinskiCarpet{\Xnew}{\Ynew}{\Step}{\NextLevel}
+                    \fi
+                \else
+                    \pgfmathsetmacro{\Xnew}{#1 + \i*\Step}
+                    \pgfmathsetmacro{\Ynew}{#2 + \j*\Step}
+                    \SierpinskiCarpet{\Xnew}{\Ynew}{\Step}{\NextLevel}
+                \fi
+            }
+        }
+    \fi
+}
+
+% Несколько итераций ковра Серпинского
+\foreach \depth/\x in {0/0,1/5,2/10,3/15}{
+    \begin{scope}[shift={(\x,0)}]
+        \SierpinskiCarpet{0}{0}{4}{\depth}
+        \draw[thick] (0,0) rectangle (4,4);
+        \node[below] at (2,-0.4) {Итерация \depth};
+    \end{scope}
+}
+
+\end{tikzpicture}
+
+\end{document}
