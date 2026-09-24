@@ -1,0 +1,104 @@
+\documentclass[25pt,a0paper,portrait]{tikzposter}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+\setmainfont{PT Serif}
+\setsansfont{PT Sans}
+\setmonofont{PT Mono}
+
+\newfontfamily\cyrillicfont{PT Serif}[Script=Cyrillic]
+\newfontfamily\cyrillicfontsf{PT Sans}[Script=Cyrillic]
+\newfontfamily\cyrillicfonttt{PT Mono}[Script=Cyrillic]
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\usepackage[
+    backend=biber,
+    style=numeric
+]{biblatex}
+
+\addbibresource{references.bib}
+
+\title{Пример научного постера}
+\author{Елизавета Гайдамака}
+\institute{Российский университет дружбы народов}
+
+\usetheme{Basic}
+
+\begin{document}
+
+\maketitle
+
+\begin{columns}
+
+% Левая колонка
+\column{0.5}
+
+\block{Введение}{
+    В данной работе рассматривается пример оформления
+    научного постера средствами LaTeX.
+
+    LaTeX позволяет создавать воспроизводимые документы
+    и автоматически оформлять библиографические ссылки
+    \cite{lamport1994}.
+}
+
+\block{Цель работы}{
+    Цель работы — изучить возможности пакета
+    \texttt{tikzposter} и создать научный постер.
+}
+
+\block{Изображение}{
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{image/1.png}
+
+        Рис. 1. Пример изображения
+    \end{center}
+}
+
+% Правая колонка
+\column{0.5}
+
+\block{Результаты}{
+
+    Основные результаты представлены в таблице.
+
+    \begin{center}
+    \begin{tabular}{lcc}
+        \toprule
+        Метод & Время, с & Точность, \% \\
+        \midrule
+        Метод A & 12.4 & 91 \\
+        Метод B & 10.8 & 94 \\
+        Метод C & 9.7  & 96 \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+}
+
+\block{Обсуждение}{
+    Полученные результаты показывают, что использование
+    LaTeX удобно для подготовки научных материалов.
+
+    Пакет \texttt{tikzposter} позволяет использовать
+    колонки, блоки, изображения и таблицы.
+}
+
+\block{Выводы}{
+    В ходе работы был создан научный постер,
+    содержащий основные элементы научного представления
+    результатов.
+}
+
+\block{Библиография}{
+    \printbibliography[heading=none]
+}
+
+\end{columns}
+
+\end{document}
