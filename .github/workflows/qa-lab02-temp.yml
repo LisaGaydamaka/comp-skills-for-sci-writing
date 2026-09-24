@@ -1,0 +1,32 @@
+name: QA lab02 artifacts
+
+on:
+  push:
+    paths:
+      - ".github/workflows/qa-lab02-temp.yml"
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install renderers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils libreoffice
+
+      - name: Render report and presentation PDFs
+        run: |
+          mkdir -p qa/report-pdf qa/presentation-pdf qa/report-docx
+          pdftoppm -png -r 120 lab02/report/report.pdf qa/report-pdf/page
+          pdftoppm -png -r 120 lab02/presentation/presentation.pdf qa/presentation-pdf/page
+          libreoffice --headless --convert-to pdf --outdir qa/report-docx lab02/report/report.docx
+          pdftoppm -png -r 120 qa/report-docx/report.pdf qa/report-docx/page
+
+      - name: Upload QA renders
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab02-qa-renders
+          path: qa
